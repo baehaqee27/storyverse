@@ -6,12 +6,21 @@ Deploying a Laravel application to Vercel requires some specific configurations 
 
 ## 1. Prerequisites
 
-### Database (Required)
-Since you cannot host MySQL on Vercel, sign up for a free/paid database provider:
--   **Neon** (Postgres) - Recommended for Vercel.
--   **PlanetScale** (MySQL).
--   **Supabase** (Postgres).
--   Or use your own VPS database.
+### 1. Database (Aiven MySQL)
+We are using **Aiven for MySQL** as the production database.
+- **Service URI**: `mysql://avnadmin:PASSWORD@mysql-34d15f8f-bbaehaqee-e23b.g.aivencloud.com:19290/defaultdb?ssl-mode=REQUIRED`
+- **SSL**: Required. Ensure your environment supports SSL connections.
+
+**Environment Variables:**
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql-34d15f8f-bbaehaqee-e23b.g.aivencloud.com
+DB_PORT=19290
+DB_DATABASE=defaultdb
+DB_USERNAME=avnadmin
+DB_PASSWORD=your_aiven_password
+MYSQL_ATTR_SSL_CA=/path/to/ca.pem (Optional, if strict verification is needed)
+```
 
 ### Storage (Critical for Covers)
 For novel covers to persist, you must configure a cloud disk.
