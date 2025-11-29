@@ -84,13 +84,15 @@ new class extends Component {
         @forelse ($comments as $comment)
             <div class="flex gap-4 group">
                 <div class="flex-shrink-0">
-                    <div class="w-10 h-10 rounded-full bg-stone-200 overflow-hidden">
-                        @if ($comment->user->profile_photo_path)
-                            <img src="{{ Storage::url($comment->user->profile_photo_path) }}"
-                                class="w-full h-full object-cover">
+                    <div class="flex-shrink-0 mr-4">
+                        @php $avatarUrl = \App\Helpers\ImageHelper::getCoverUrl($comment->user->profile_photo_path); @endphp
+                        @if ($comment->user->profile_photo_path && $avatarUrl)
+                            <img src="{{ $avatarUrl }}"
+                                class="w-10 h-10 rounded-full object-cover border border-gray-200"
+                                alt="{{ $comment->user->name }}">
                         @else
                             <div
-                                class="w-full h-full flex items-center justify-center text-stone-400 font-bold text-sm">
+                                class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
                                 {{ substr($comment->user->name, 0, 1) }}
                             </div>
                         @endif

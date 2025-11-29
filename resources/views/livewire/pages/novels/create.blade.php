@@ -62,7 +62,7 @@ new #[Layout('layouts.app')] class extends Component {
         ];
 
         if ($this->cover_image) {
-            $novelData['cover_image'] = $this->cover_image->store('covers', 'public');
+            $novelData['cover_image'] = $this->cover_image->store('covers', config('filesystems.default'));
         }
 
         $novel = auth()->user()->novels()->create($novelData);

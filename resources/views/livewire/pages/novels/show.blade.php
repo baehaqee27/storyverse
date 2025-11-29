@@ -29,8 +29,13 @@ new #[Layout('layouts.app')] class extends Component {
         class="relative bg-gray-900 min-h-[500px] md:h-[500px] overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem] shadow-2xl">
         <div class="absolute inset-0">
             @if ($novel->cover_image)
-                <img src="{{ Storage::url($novel->cover_image) }}"
-                    class="w-full h-full object-cover opacity-40 blur-2xl scale-110" alt="Background">
+                @php $coverUrl = \App\Helpers\ImageHelper::getCoverUrl($novel->cover_image); @endphp
+                @if ($coverUrl)
+                    <img src="{{ $coverUrl }}" class="w-full h-full object-cover opacity-40 blur-2xl scale-110"
+                        alt="Background">
+                @else
+                    <div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 opacity-80"></div>
+                @endif
             @else
                 <div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 opacity-80"></div>
             @endif
@@ -44,9 +49,8 @@ new #[Layout('layouts.app')] class extends Component {
                 {{-- Cover Image --}}
                 <div
                     class="w-40 h-60 md:w-52 md:h-80 flex-shrink-0 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden bg-white md:-mb-24 border-4 border-white transform rotate-0 md:rotate-2 md:hover:rotate-0 transition-transform duration-500">
-                    @if ($novel->cover_image)
-                        <img src="{{ Storage::url($novel->cover_image) }}" class="w-full h-full object-cover"
-                            alt="{{ $novel->title }}">
+                    @if ($novel->cover_image && $coverUrl)
+                        <img src="{{ $coverUrl }}" class="w-full h-full object-cover" alt="{{ $novel->title }}">
                     @else
                         <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">No Cover
                         </div>
@@ -198,8 +202,15 @@ new #[Layout('layouts.app')] class extends Component {
                         <div class="w-16 h-16 rounded-full bg-indigo-100 p-1">
                             <div class="w-full h-full rounded-full bg-gray-200 overflow-hidden">
                                 @if ($novel->user->avatar)
-                                    <img src="{{ Storage::url($novel->user->avatar) }}"
-                                        class="w-full h-full object-cover">
+                                    @php $avatarUrl = \App\Helpers\ImageHelper::getCoverUrl($novel->user->avatar); @endphp
+                                    @if ($avatarUrl)
+                                        <img src="{{ $avatarUrl }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div
+                                            class="w-full h-full flex items-center justify-center text-gray-500 font-bold text-2xl bg-white">
+                                            {{ substr($novel->user->name, 0, 1) }}
+                                        </div>
+                                    @endif
                                 @else
                                     <div
                                         class="w-full h-full flex items-center justify-center text-gray-500 font-bold text-2xl bg-white">

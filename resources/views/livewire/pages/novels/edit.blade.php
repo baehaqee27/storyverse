@@ -87,15 +87,15 @@ new #[Layout('layouts.app')] class extends Component {
 
         if ($this->is_cover_deleted) {
             if ($this->novel->cover_image) {
-                Storage::disk('public')->delete($this->novel->cover_image);
+                Storage::disk(config('filesystems.default'))->delete($this->novel->cover_image);
             }
             $novelData['cover_image'] = null;
         } elseif ($this->new_cover_image) {
             // Delete old cover if exists
             if ($this->novel->cover_image) {
-                Storage::disk('public')->delete($this->novel->cover_image);
+                Storage::disk(config('filesystems.default'))->delete($this->novel->cover_image);
             }
-            $novelData['cover_image'] = $this->new_cover_image->store('covers', 'public');
+            $novelData['cover_image'] = $this->new_cover_image->store('covers', config('filesystems.default'));
         }
 
         $this->novel->update($novelData);
@@ -250,7 +250,15 @@ new #[Layout('layouts.app')] class extends Component {
                                         <img src="{{ $new_cover_image->temporaryUrl() }}"
                                             class="w-full h-full object-cover">
                                     @elseif($cover_image)
-                                        <img src="{{ Storage::url($cover_image) }}" class="w-full h-full object-cover">
+                                        @php
+                                            $coverUrl = \App\Helpers\ImageHelper::getCoverUrl($cover_image);
+                                        @endphp
+                                        @if ($coverUrl)
+                                            <img src="{{ $coverUrl }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center text-gray-400">No
+                                                Cover</div>
+                                        @endif
                                     @else
                                         <div class="w-full h-full flex items-center justify-center text-gray-400">No
                                             Cover</div>

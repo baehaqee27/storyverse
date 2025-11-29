@@ -39,13 +39,14 @@ new #[Layout('layouts.app')] class extends Component {
                 {{-- Avatar --}}
                 <div class="flex-shrink-0">
                     <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-indigo-100 p-1 shadow-xl">
-                        <div class="w-full h-full rounded-full bg-white overflow-hidden">
-                            @if ($user->avatar)
-                                <img src="{{ Storage::url($user->avatar) }}" class="w-full h-full object-cover"
-                                    alt="{{ $user->name }}">
+                        <div
+                            class="w-full h-full rounded-full bg-gray-200 overflow-hidden border-4 border-white shadow-lg">
+                            @php $avatarUrl = \App\Helpers\ImageHelper::getCoverUrl($user->avatar); @endphp
+                            @if ($user->avatar && $avatarUrl)
+                                <img src="{{ $avatarUrl }}" class="w-full h-full object-cover">
                             @else
                                 <div
-                                    class="w-full h-full flex items-center justify-center text-indigo-300 font-bold text-5xl bg-indigo-50">
+                                    class="w-full h-full flex items-center justify-center text-gray-400 font-bold text-4xl bg-stone-100">
                                     {{ substr($user->name, 0, 1) }}
                                 </div>
                             @endif
@@ -108,8 +109,9 @@ new #[Layout('layouts.app')] class extends Component {
                         <div
                             class="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
                             <div class="aspect-[2/3] relative overflow-hidden bg-gray-100">
-                                @if ($novel->cover_image)
-                                    <img src="{{ Storage::url($novel->cover_image) }}"
+                                @php $coverUrl = \App\Helpers\ImageHelper::getCoverUrl($novel->cover_image); @endphp
+                                @if ($novel->cover_image && $coverUrl)
+                                    <img src="{{ $coverUrl }}"
                                         class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                                         alt="{{ $novel->title }}">
                                 @else
@@ -131,6 +133,7 @@ new #[Layout('layouts.app')] class extends Component {
                                     </div>
                                 </div>
                             </div>
+
                             <div class="p-6 flex-1 flex flex-col">
                                 <h3
                                     class="text-xl font-bold text-gray-900 font-serif mb-2 line-clamp-1 group-hover:text-indigo-600 transition-colors">

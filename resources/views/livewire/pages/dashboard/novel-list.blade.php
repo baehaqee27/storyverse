@@ -28,9 +28,11 @@ new class extends Component {
         <div
             class="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden hover:shadow-md transition-shadow group">
             <div class="relative h-48 bg-gray-100">
-                @if ($novel->cover_image)
-                    <img src="{{ Storage::url($novel->cover_image) }}" class="w-full h-full object-cover"
-                        alt="{{ $novel->title }}">
+                @php
+                    $coverUrl = \App\Helpers\ImageHelper::getCoverUrl($novel->cover_image);
+                @endphp
+                @if ($coverUrl)
+                    <img src="{{ $coverUrl }}" class="w-full h-full object-cover" alt="{{ $novel->title }}">
                 @else
                     <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50">
                         <span class="text-4xl font-serif italic opacity-20">SV</span>

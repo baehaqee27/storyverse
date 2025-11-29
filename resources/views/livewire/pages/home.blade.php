@@ -26,9 +26,14 @@ new #[Layout('layouts.app')] class extends Component {
             <div class="relative rounded-[2.5rem] overflow-hidden shadow-xl bg-gray-900 text-white group">
                 <div class="absolute inset-0">
                     @if ($featured->cover_image)
-                        <img src="{{ Storage::url($featured->cover_image) }}"
-                            class="w-full h-full object-cover opacity-50 blur-sm transition-transform duration-700 group-hover:scale-105"
-                            alt="Hero Background">
+                        @php $featuredCoverUrl = \App\Helpers\ImageHelper::getCoverUrl($featured->cover_image); @endphp
+                        @if ($featuredCoverUrl)
+                            <img src="{{ $featuredCoverUrl }}"
+                                class="w-full h-full object-cover opacity-50 blur-sm transition-transform duration-700 group-hover:scale-105"
+                                alt="Hero Background">
+                        @else
+                            <div class="w-full h-full bg-gradient-to-br from-indigo-900 to-purple-900 opacity-80"></div>
+                        @endif
                     @else
                         <div class="w-full h-full bg-gradient-to-br from-indigo-900 to-purple-900 opacity-80"></div>
                     @endif
@@ -37,8 +42,8 @@ new #[Layout('layouts.app')] class extends Component {
                 <div class="relative z-10 p-8 md:p-20 flex flex-col md:flex-row items-center gap-12">
                     <div
                         class="w-56 h-80 flex-shrink-0 rounded-2xl shadow-2xl overflow-hidden bg-gray-800 rotate-3 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-105 border-4 border-white/10">
-                        @if ($featured->cover_image)
-                            <img src="{{ Storage::url($featured->cover_image) }}" class="w-full h-full object-cover"
+                        @if ($featured->cover_image && $featuredCoverUrl)
+                            <img src="{{ $featuredCoverUrl }}" class="w-full h-full object-cover"
                                 alt="{{ $featured->title }}">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-500">No Cover</div>
@@ -96,8 +101,9 @@ new #[Layout('layouts.app')] class extends Component {
                 <a href="{{ route('novels.show', $novel) }}" wire:navigate class="group block">
                     <div
                         class="relative aspect-[2/3] rounded-2xl overflow-hidden shadow-md bg-gray-200 mb-5 transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2">
-                        @if ($novel->cover_image)
-                            <img src="{{ Storage::url($novel->cover_image) }}"
+                        @php $coverUrl = \App\Helpers\ImageHelper::getCoverUrl($novel->cover_image); @endphp
+                        @if ($novel->cover_image && $coverUrl)
+                            <img src="{{ $coverUrl }}"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 alt="{{ $novel->title }}">
                         @else
