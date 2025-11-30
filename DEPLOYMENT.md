@@ -22,6 +22,19 @@ DB_PASSWORD=your_aiven_password
 MYSQL_ATTR_SSL_CA=/path/to/ca.pem (Optional, if strict verification is needed)
 ```
 
+### 3. Email (Resend)
+We use **Resend** for reliable email delivery.
+- **API Key**: Get it from [Resend Dashboard](https://resend.com/api-keys).
+- **Domain**: Verify your domain or use `onboarding@resend.dev` for testing.
+
+**Environment Variables:**
+```env
+MAIL_MAILER=resend
+RESEND_API_KEY=re_123456789
+MAIL_FROM_ADDRESS="onboarding@resend.dev"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 ### Storage (Critical for Covers)
 For novel covers to persist, you must configure a cloud disk.
 1.  Create an account on **Cloudinary**.
