@@ -37,6 +37,10 @@ new class extends Component {
                         class="rounded-full px-4 py-2 hover:bg-stone-100 transition-colors text-center {{ request()->routeIs('home') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600' }}">
                         {{ __('Discover') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate
+                        class="rounded-full px-4 py-2 hover:bg-stone-100 transition-colors text-center {{ request()->routeIs('about') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600' }}">
+                        {{ __('About') }}
+                    </x-nav-link>
                     @auth
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate
                             class="rounded-full px-4 py-2 hover:bg-stone-100 transition-colors {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600' }}">
@@ -123,6 +127,9 @@ new class extends Component {
         <div class="pt-2 pb-3 space-y-1 px-4">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate class="rounded-lg">
                 {{ __('Discover') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate class="rounded-lg">
+                {{ __('About') }}
             </x-responsive-nav-link>
             @auth
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate class="rounded-lg">

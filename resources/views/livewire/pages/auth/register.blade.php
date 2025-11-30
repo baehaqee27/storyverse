@@ -29,7 +29,14 @@ new #[Layout('layouts.guest')] class extends Component {
 
         $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered(($user = User::create($validated))));
+        $user = User::create($validated);
+
+        try {
+            event(new Registered($user));
+        } catch (\Exception $e) {
+            // Log error but allow registration to proceed
+            \Illuminate\Support\Facades\Log::error('Registration email failed: ' . $e->getMessage());
+        }
 
         Auth::login($user);
 

@@ -6,6 +6,7 @@ use Livewire\Volt\Volt;
 
 Volt::route('/', 'pages.home')->name('home');
 Volt::route('/founder', 'pages.founder')->name('founder');
+Volt::route('/about', 'pages.about')->name('about');
 Volt::route('dashboard', 'pages.dashboard.novel-list')->name('dashboard');
 Volt::route('novels/create', 'pages.novels.create')->name('novels.create');
 Volt::route('novels/{novel}/edit', 'pages.novels.edit')->name('novels.edit');
