@@ -35,6 +35,13 @@ MAIL_FROM_ADDRESS="onboarding@resend.dev"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
+### 4. Enable Email Verification (Optional)
+Currently, email verification is **disabled** to avoid issues with unverified domains.
+To enable it (once you have a verified domain):
+1.  Open `app/Models/User.php`.
+2.  Uncomment `implements MustVerifyEmail`.
+3.  Ensure your `MAIL_` environment variables are correct.
+
 ### Storage (Critical for Covers)
 For novel covers to persist, you must configure a cloud disk.
 1.  Create an account on **Cloudinary**.
