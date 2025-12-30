@@ -28,8 +28,9 @@ class NovelResource extends Resource
                     ->required()
                     ->searchable()
                     ->preload(),
-                Forms\Components\Select::make('genre_id')
-                    ->relationship('genre', 'name')
+                Forms\Components\Select::make('genres')
+                    ->relationship('genres', 'name')
+                    ->multiple()
                     ->required()
                     ->searchable()
                     ->preload(),
@@ -68,15 +69,25 @@ class NovelResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('genre.name')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('genres.name')
+                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('chapters_count')
+                    ->counts('chapters')
+                    ->label('Chapters'),
                 Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ongoing' => 'success',
+                        'completed' => 'info',
+                        'hiatus' => 'warning',
+                    }),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -89,7 +100,13 @@ class NovelResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'ongoing' => 'Ongoing',
+                        'completed' => 'Completed',
+                        'hiatus' => 'Hiatus',
+                    ]),
+                Tables\Filters\TernaryFilter::make('is_published'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -104,7 +121,7 @@ class NovelResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ChaptersRelationManager::class,
         ];
     }
 

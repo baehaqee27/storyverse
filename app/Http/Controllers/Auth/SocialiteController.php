@@ -25,11 +25,11 @@ class SocialiteController extends Controller
                 'email' => $googleUser->getEmail(),
             ], [
                 'name' => $googleUser->getName(),
-                'username' => Str::slug($googleUser->getName()) . '-' . Str::random(4), // Generate unique username
+                'username' => Str::slug($googleUser->getName()) . '-' . Str::random(4),
                 'avatar' => $googleUser->getAvatar(),
                 'google_id' => $googleUser->getId(),
-                'password' => Hash::make(Str::random(24)), // Random password
-                'email_verified_at' => now(), // Auto-verify email from Google
+                'password' => Hash::make(Str::random(24)),
+                'email_verified_at' => now(),
             ]);
 
             Auth::login($user);
